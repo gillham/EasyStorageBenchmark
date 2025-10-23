@@ -44,21 +44,26 @@ Hardware known to work on C64:
 Here are a couple of screenshots of ESB64 in action on the VICE emulator.
 
 Launch screen:
+
 ![ESB64 Screenshot](images/esb64-launch.png)
 
 After doing a save:
+
 ![ESB64 Save](images/esb64-save.png)
 
 After doing a load:
+
 ![ESB64 Load](images/esb64-load.png)
 
 Showing the log after several tests:
+
 ![ESB64 Log](images/esb64-log.png)
 
 
 ESB64 works less reliably with the VICE host file-system.  This is a known issue with VICE and/or Prog8 where results are inconsistent or hang.  Since ESB is meant for benchmarking real hardware it shouldn't be a big issue, but keep it in mind when testing with VICE.  Hopefully I'll figure out a way to workaround the issues eventually, but for now realize it isn't reliable.
 
 After doing a save/load to a VICE host file-system on device 10:
+
 ![ESB64 HOSTFS](images/esb64-hostfs.png)
 
 
@@ -72,8 +77,10 @@ Hardware known to work on X16:
 Here are a couple of screenshots of ESBX16 in action on the X16 emulator.
 
 Launch screen:
+
 ![ESBX16 Screenshot](images/esbx16-launch.png)
 
 
 After doing a save & load:
+
 ![ESBX16 Load](images/esbx16-load.png)
