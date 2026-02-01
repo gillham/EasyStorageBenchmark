@@ -1,2 +1,8 @@
 # build directory
 build/
+
+# IntelliJ IDEA files
+.idea/
+
+# Prog8 library files
+prog8lib-*/
