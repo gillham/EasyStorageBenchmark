@@ -227,7 +227,6 @@ esb {
         txt.nl()
         txt.color(COLOR_KEYS)
         txt.print(platform.UI_LOAD)
-        ;txt.print(" F7")
         txt.color(COLOR_MENU)
         txt.print(": Start LOAD test")
         txt.nl()
@@ -384,7 +383,9 @@ esb {
         speed((data_size as float) * (data_blocks as float), total_time2, false)
         drawlast()
         txt.plot(0,23)
-        txt.print("SAVE done, press F7 for LOAD test.")
+        txt.print("SAVE done, press")
+        txt.print(platform.UI_LOAD)
+        txt.print(" for LOAD test.")
     }
 
     sub results() {
