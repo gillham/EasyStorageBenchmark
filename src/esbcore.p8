@@ -86,32 +86,36 @@ esb {
 
     sub dispatch(ubyte key) {
         when key {
-            $85 -> {
+            platform.KEY_DRIVE_DOWN, $4a, $85 -> {
+                ; debug
+                ;txt.print("drive--\n")
                 diskio.drivenumber--
                 if diskio.drivenumber < MIN_DRIVE
                     diskio.drivenumber = MAX_DRIVE
                 drawdrive()
             }
-            $86 -> {
+            platform.KEY_DRIVE_UP, $4b, $86 -> {
                 diskio.drivenumber++
                 if diskio.drivenumber > MAX_DRIVE
                     diskio.drivenumber = MIN_DRIVE
                 drawdrive()
             }
-            $87 -> {
+            ;platform.KEY_SAVE, $53, $87 -> {
+            platform.KEY_SAVE, $87 -> {
                 ;writetest()
                 cleanfiles()
                 savetest()
             }
-            $88 -> {
+            ;platform.KEY_LOAD, $4c, $88 -> {
+            platform.KEY_LOAD, $88 -> {
                 ;readtest()
                 loadtest()
             }
-            $8c -> {
+            platform.KEY_LOG, $8c -> {
                 results()
             }
-            $2b, $3d -> {
-                if data_blocks < 16
+            platform.KEY_BLOCK_UP, $2b, $3d -> {
+                if data_blocks < platform.MAX_BLOCKS
                     data_blocks++
                 if data_blocks <= 2
                     data_size = 8192
@@ -121,7 +125,7 @@ esb {
                     data_size = 32768
                 drawchunks()
             }
-            $2d -> {
+            platform.KEY_BLOCK_DOWN, $2d -> {
                 if data_blocks > 1
                     data_blocks--
                 if data_blocks <= 2
@@ -132,7 +136,7 @@ esb {
                     data_size = 32768
                 drawchunks()
             }
-            $18 -> {
+            platform.KEY_EXIT, $18 -> {
                 txt.plot(0,20)
                 sys.exit(0)
             }
@@ -197,8 +201,8 @@ esb {
     sub drawtitle() {
         txt.cls()
         txt.color(COLOR_TITLE)
-        txt.plot(main.title_start, 0)
-        txt.print(main.title)
+        txt.plot(platform.title_start, 0)
+        txt.print(platform.title)
         txt.color(COLOR_TEXT)
     }
 
@@ -206,37 +210,42 @@ esb {
 
         txt.plot(0, row)
         txt.color(COLOR_KEYS)
-        txt.print(" F1")
+        txt.print(platform.UI_DRIVE_DOWN)
         txt.color(COLOR_MENU)
         txt.print(": Lower drive number")
         txt.nl()
         txt.color(COLOR_KEYS)
-        txt.print(" F3")
+        txt.print(platform.UI_DRIVE_UP)
         txt.color(COLOR_MENU)
         txt.print(": Higher drive number")
         txt.nl()
         txt.color(COLOR_KEYS)
-        txt.print(" F5")
+        txt.print(platform.UI_SAVE)
+        ;txt.print(" F5")
         txt.color(COLOR_MENU)
         txt.print(": Start SAVE test")
         txt.nl()
         txt.color(COLOR_KEYS)
-        txt.print(" F7")
+        txt.print(platform.UI_LOAD)
+        ;txt.print(" F7")
         txt.color(COLOR_MENU)
         txt.print(": Start LOAD test")
         txt.nl()
         txt.color(COLOR_KEYS)
-        txt.print(" F8")
+        txt.print(platform.UI_LOG)
+        ;txt.print(" F8")
         txt.color(COLOR_MENU)
         txt.print(": Results log")
         txt.nl()
         txt.color(COLOR_KEYS)
-        txt.print(" - ")
+        txt.print(platform.UI_BLOCK_DOWN)
+        ;txt.print(" - ")
         txt.color(COLOR_MENU)
         txt.print(": Smaller file")
         txt.nl()
         txt.color(COLOR_KEYS)
-        txt.print(" + ")
+        txt.print(platform.UI_BLOCK_UP)
+        ;txt.print(" + ")
         txt.color(COLOR_MENU)
         txt.print(": Larger file")
         txt.nl()
@@ -244,7 +253,8 @@ esb {
         ; exit keystroke
         txt.plot(26, row)
         txt.color(COLOR_KEYS)
-        txt.print("Ctrl-X")
+        txt.print(platform.UI_EXIT)
+        ;txt.print("Ctrl-X")
         txt.color(COLOR_MENU)
         txt.print(": exits")
 
