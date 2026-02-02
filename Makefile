@@ -36,6 +36,7 @@ EMUIDE=$(EMU_CMD) $(EMU_BASE) $(EMU_KERNAL) $(EMU_CART) $(EMU_DISK08) $(EMU_DISK
 EMU128=$(EMU_CMD128) $(EMU_BASE) $(EMU_KERNAL) $(EMU_DISK) $(EMU_REU)
 #EMUPET=xpet -keymap 1 -model 4032 $(EMU_DISK)
 EMUPET=xpet -model 4032 $(EMU_DISK)
+EMUPET80=xpet -model 8032 $(EMU_DISK)
 
 PCC?=prog8c
 PCCARGSC64=-srcdirs src:src/c64 -asmlist -target c64 -out build
@@ -87,6 +88,9 @@ emu128: disk
 
 emupet: build/esbpet.prg
 	$(EMUPET) $<
+
+emupet80: build/esbpet.prg
+	$(EMUPET80) $<
 
 emux16: build/esbx16.prg
 	x16emu -scale 1 -fsroot build/ -prg $< -run

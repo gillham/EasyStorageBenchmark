@@ -142,9 +142,9 @@ esb {
             }
             else -> {
                 clearbottom()
-                txt.print("KEY: ")
-                txt.print_ubhex(key, true)
-                txt.nl()
+                ;txt.print("KEY: ")
+                ;txt.print_ubhex(key, true)
+                ;txt.nl()
             }
         }
     }
@@ -276,7 +276,8 @@ esb {
         repeat 8 {
             txt.plot(col, row+i)
             temp = chars[index+i]
-            repeat 8 {
+            ; only need the leftmost 7-bits
+            repeat 7 {
                 if (temp & %10000000) != 00 {
                     txt.chrout('*')
                 } else {
