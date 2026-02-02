@@ -77,7 +77,7 @@ esb {
 ;        return
         for i in 16 to 23 {
             txt.plot(0,i)
-            repeat 40 {
+            repeat 39 {
                 txt.spc()
             }
         }
