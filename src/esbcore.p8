@@ -114,7 +114,7 @@ esb {
                 if last_blocks != data_blocks {
                     cleanfiles()
                     txt.print(" (SAVE first...)")
-                    sys.wait(60)
+                    sys.wait(180)
                     savetest(false)
                     last_blocks = data_blocks
                     sys.wait(180)
