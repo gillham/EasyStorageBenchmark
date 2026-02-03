@@ -21,6 +21,7 @@ platform {
 
     ; custom settings
     const ubyte MAX_BLOCKS = 32
+    const uword MAX_DATA_SIZE = 32768
 
     ; C64 colors (cleanup)
     const ubyte COLOR_BLACK = 0

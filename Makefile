@@ -44,7 +44,7 @@ PCCARGSC128=-srcdirs src:src/c128 -asmlist -target c128 -out build
 PCCARGSX16=-srcdirs src:src/cx16 -asmlist -target cx16 -out build
 PCCARGSPET32=-srcdirs src:src/pet32 -asmlist -target pet32 -out build
 
-PROGS		= build/esb64.prg build/esbx16.prg
+PROGS		= build/esb64.prg build/esbx16.prg build/esbpet.prg
 SRCSC64		= src/esb64.p8 src/esbcore.p8 src/c64/platform.p8
 SRCSX16		= src/esbx16.p8 src/esbcore.p8 src/cx16/platform.p8
 SRCSPET32	= src/esbpet.p8 src/esbcore.p8 src/pet32/platform.p8

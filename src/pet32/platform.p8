@@ -5,7 +5,8 @@ platform {
 %option merge
 
     ; custom settings
-    const ubyte MAX_BLOCKS = 32
+    const ubyte MAX_BLOCKS = 64
+    const uword MAX_DATA_SIZE = 16384
 
     ; C64 colors (cleanup)
     const ubyte COLOR_BLACK = 0

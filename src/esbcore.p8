@@ -48,6 +48,7 @@ esb {
     str data_file = "esbdata0.bin"
     uword data_size = 8192
     ubyte data_blocks = 1   ; single 8KB chunk for testing.
+    ubyte last_blocks = 0   ; block size of last save, 0 is haven't yet saved.
 
     ubyte[80] chars
 
@@ -104,11 +105,20 @@ esb {
             platform.KEY_SAVE, $87 -> {
                 ;writetest()
                 cleanfiles()
-                savetest()
+                savetest(true)
+                last_blocks = data_blocks
             }
             ;platform.KEY_LOAD, $4c, $88 -> {
             platform.KEY_LOAD, $88 -> {
                 ;readtest()
+                if last_blocks != data_blocks {
+                    cleanfiles()
+                    txt.print(" (SAVE first...)")
+                    sys.wait(60)
+                    savetest(false)
+                    last_blocks = data_blocks
+                    sys.wait(180)
+                }
                 loadtest()
             }
             platform.KEY_LOG, $8c -> {
@@ -122,7 +132,7 @@ esb {
                 if data_blocks > 2 and data_blocks < 5
                     data_size = 16384
                 if data_blocks >= 5
-                    data_size = 32768
+                    data_size = platform.MAX_DATA_SIZE
                 drawchunks()
             }
             platform.KEY_BLOCK_DOWN, $2d -> {
@@ -133,7 +143,7 @@ esb {
                 if data_blocks > 2 and data_blocks < 5
                     data_size = 16384
                 if data_blocks >= 5
-                    data_size = 32768
+                    data_size = platform.MAX_DATA_SIZE
                 drawchunks()
             }
             platform.KEY_EXIT, $18 -> {
@@ -303,6 +313,7 @@ esb {
 
     sub loadtest() {
         data_file[7] = 'a'
+        uword result
 
         clearbottom()
         txt.print("Loading ")
@@ -312,14 +323,12 @@ esb {
         txt.print("KB.")
         txt.nl()
 
-        ; debug
-        uword result
-
         ; reset jiffy clock before load
         main.timer_start()
 
         repeat data_blocks {
             result =  diskio.load(data_file, data)
+            if result == 0 break
             data_file[7] += 1
         }
 
@@ -327,6 +336,12 @@ esb {
         main.timer_stop()
         ;total_time = cbm.RDTIM16()
         total_time2 = main.timer_value
+
+        if result == 0 {
+            txt.print("\nLOAD error: ")
+            txt.print(diskio.status())
+            return
+        }
 
 ;        txt.nl()
 ;        txt.nl()
@@ -346,8 +361,9 @@ esb {
         txt.print("LOAD done...")
     }
 
-    sub savetest() {
+    sub savetest(bool showhelp) {
         data_file[7] = 'a'
+        bool ok
 
         clearbottom()
         txt.print("Saving ")
@@ -361,7 +377,8 @@ esb {
         main.timer_start()
 
         repeat data_blocks {
-            void diskio.save(data_file, data, data_size)
+            ok = diskio.save(data_file, data, data_size)
+            if not ok break
             data_file[7] += 1
         }
 
@@ -369,6 +386,12 @@ esb {
         ;total_time = cbm.RDTIM16()
         main.timer_stop()
         total_time2 = main.timer_value
+
+        if not ok {
+            txt.print("\nSAVE error: ")
+            txt.print(diskio.status())
+            return
+        }
 
 ;        txt.nl()
 ;        txt.nl()
@@ -383,10 +406,12 @@ esb {
         ;speed((data_size as float) * (data_blocks as float), total_time, false)
         speed((data_size as float) * (data_blocks as float), total_time2, false)
         drawlast()
-        txt.plot(0,23)
-        txt.print("SAVE done, press")
-        txt.print(platform.UI_LOAD)
-        txt.print(" for LOAD test.")
+        if showhelp {
+            txt.plot(0,23)
+            txt.print("SAVE done, press")
+            txt.print(platform.UI_LOAD)
+            txt.print(" for LOAD test.")
+        }
     }
 
     sub results() {
